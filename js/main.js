@@ -104,30 +104,45 @@ const icons = [
 
 const colors = ['#7f5af0', '#2cb67d', '#72757e'];
 
+// Milestone 1
 // Variabile punto DOM dell'HTML
 const container = document.querySelector('.icons');
 
 // Dichiarazione funzione per stampare icone a schermo
 printIcons(icons, container);
 
+// Milestone 2
 // Nuovo array di oggetti contente anche il colore
 const coloredIcons = colorIcons(icons, colors);
 
 // Dichiarazione funzione per stampare icone a schermo
 printIcons(coloredIcons, container);
 
+// Milestone 3
 // Variabile punto DOM dell'HTML
-const select = document.querySelector('.wrap-select')
-console.log(select);
+const select = document.querySelector('#type')
+
+// Generare select option
+const types = getType(coloredIcons);
+genOption(types, select);
+
+// Filtrare le icone
+select.addEventListener('change', () => {
+    const selected = select.value;
+    
+    const filteredIcons = filterIcons(coloredIcons, selected);
+    printIcons(filteredIcons, container);
+})
+
+
 
 
 
 /*********************************************
 * FUNCTIONS
 *********************************************/
-// Stampare a schermo
+// Stampare a schermo icone
 function printIcons(icons, container) {
-
     let html = '';
     
     icons.forEach((icon) => {
@@ -175,3 +190,32 @@ function getType(icons) {
 
     return type;
 }
+
+// Generare option
+function genOption(types, select) {
+    let option = '';
+
+    types.forEach((type) => {
+        
+        // Aggiunta HTML dinamico
+        option += `<option value="${type}">${type}</option>`
+    })
+
+    // Aggiunta HTML nel documento
+    select.innerHTML += option;
+}
+
+// Generare icone filtrate
+function filterIcons(icons, selected) {
+
+    if (selected === 'all') {
+        return icons;
+    }
+
+    const filtered = icons.filter((icon) => {
+        return (icon.type === selected);
+    })
+
+    return filtered;
+}
+
